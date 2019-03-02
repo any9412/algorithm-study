@@ -1,0 +1,73 @@
+1. 합병 정렬(Merge Sort)
+- 분할 정복 중 하나다.
+- 두 개의 정렬된 파일을 합쳐 하나의 큰 정렬로 된 파일을 만드는 방식이다.
+- 데이터에 순차적으로 접근한다.
+- 입력의 초기 정렬 상태에 무관하다.
+
+2. 장점
+- 안정적이다. 
+
+3. 단점
+- 레코드가 배열일 경우, 제자리 정렬이 아니다. (임시 배열이 필요하다.)
+
+4. 알고리즘
+(1) 입력 배열을 같은 크기의 2개 부분 배열로 분할한다.
+(2) 부분 배열을 정렬한다.
+(3) 정렬된 배열을 합병한다.
+(4) 이 과정을 재귀적으로 반복한다.
+
+5. 코드
+/*Merge Sort*/
+#define MAX_SIZE 8
+int sorted[MAX_SIZE]
+
+void merge(int list[], int left, int mid, int right)
+{
+  int i, j, k, l;
+  i = left;
+  j = mid+1;
+  k = left;
+
+  /* 분할 정렬된 list의 합병 */
+  while(i<=mid && j<=right){
+    if(list[i]<=list[j])
+      sorted[k++] = list[i++];
+    else
+      sorted[k++] = list[j++];
+  }
+
+  // 남아 있는 값들을 일괄 복사
+  if(i>mid){
+    for(l=j; l<=right; l++)
+      sorted[k++] = list[l];
+  }
+  else{
+    for(l=i; l<=mid; l++)
+      sorted[k++] = list[l];
+  }
+
+  // 배열 sorted[](임시 배열)의 리스트를 배열 list[]로 재복사
+  for(l=left; l<=right; l++){
+    list[l] = sorted[l];
+  }
+}
+
+// 합병 정렬
+void merge_sort(int list[], int left, int right){
+  int mid;
+  if(left<right){
+    mid = (left+right)/2 // 중간 위치를 계산하여 리스트를 균등 분할 -분할(Divide)
+    merge_sort(list, left, mid); // 앞쪽 부분 리스트 정렬 -정복(Conquer)
+    merge_sort(list, mid+1, right); // 뒤쪽 부분 리스트 정렬 -정복(Conquer)
+    merge(list, left, mid, right); // 정렬된 2개의 부분 배열을 합병하는 과정 -결합(Combine)
+  }
+}
+
+6. 시간 복잡도
+Worst	O(nlongn)
+Best	O(nlongn)
+Avg	O(nlongn)
+
+7. 참고
+- 다양한 예제로 학습하는 데이터 구조와 알고리즘
+- [알고리즘] 합병 정렬(merge sort)이란 (https://gmlwjd9405.github.io/2018/05/08/algorithm-merge-sort.html)
